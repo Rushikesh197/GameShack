@@ -1,47 +1,39 @@
 from rest_framework import generics
+from rest_framework.parsers import MultiPartParser, FormParser
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Game
+from rest_framework.filters import SearchFilter
 from .serializers import GameSerializer
-from rest_framework.parsers import MultiPartParser, FormParser
 
 class GameListView(generics.ListAPIView):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = {
-        'title': ['exact', 'icontains'],
-        'developer__name': ['exact', 'icontains'],
-        'release_date': ['exact', 'year__gte', 'year__lte'],
-        'price': ['exact', 'gte', 'lte'],
-    }
+    filter_backends = [SearchFilter]
+    search_fields = ['title', 'developer__name', 'release_date', 'price', 'description']
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        query_params = self.request.query_params
 
-        # Apply additional query parameters dynamically
-        title = self.request.query_params.get('title')
-        developer_name = self.request.query_params.get('developer_name')
-        release_year = self.request.query_params.get('release_year')
-        min_price = self.request.query_params.get('min_price')
-        max_price = self.request.query_params.get('max_price')
+        if 'title' in query_params:
+            queryset = queryset.filter(title__icontains=query_params['title'])
+    
+        if 'developer' in query_params:
+            queryset = queryset.filter(developer__name__icontains=query_params['developer'])
 
-        if title:
-            queryset = queryset.filter(title__icontains=title)
+        if 'release_date' in query_params:
+            queryset = queryset.filter(release_date=query_params['release_date'])  # Use exact match for date
 
-        if developer_name:
-            queryset = queryset.filter(developer__name__icontains=developer_name)
+        if 'price' in query_params:
+            queryset = queryset.filter(price=query_params['price'])  # Use exact match for price
 
-        if release_year:
-            queryset = queryset.filter(release_date__year=release_year)
+        if 'description' in query_params:  
+            queryset = queryset.filter(description__icontains=query_params['description'])
 
-        if min_price:
-            queryset = queryset.filter(price__gte=min_price)
-
-        if max_price:
-            queryset = queryset.filter(price__lte=max_price)
+        if 'id' in query_params:
+            queryset = queryset.filter(id=query_params['id'])  # Use exact match for ID
 
         return queryset
-
 
 class GameCreateView(generics.CreateAPIView):
     queryset = Game.objects.all()
