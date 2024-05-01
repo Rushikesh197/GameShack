@@ -1,9 +1,11 @@
-# store/urls.py
-from django.urls import path
-from .views import GameListView, AddToCartView, PurchaseView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import CartViewSet, FavoriteViewSet
+
+router = DefaultRouter()
+router.register(r'cart', CartViewSet, basename='cart')
+router.register(r'favorite', FavoriteViewSet, basename='favorite')
 
 urlpatterns = [
-    path('games/', GameListView.as_view(), name='game-list'),
-    path('add-to-cart/', AddToCartView.as_view(), name='add-to-cart'),
-    path('purchase/', PurchaseView.as_view(), name='purchase'),
+    path('', include(router.urls)),
 ]

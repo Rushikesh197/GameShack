@@ -175,6 +175,7 @@ const UserDashboard = () => {
           </Button>
         </div>
         {/* Game List Section */}
+        <AppBar></AppBar>
         <Typography variant="h4" style={{ marginBottom: 20 }}>Browse Games</Typography>
         <Grid container spacing={3}>
           {games.map((game) => (
