@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { TextField, Button, AppBar,Toolbar } from '@mui/material';
+import { TextField, Button, AppBar,Toolbar,Link } from '@mui/material';
 import { useParams,useNavigate } from 'react-router-dom';
-
 
 const DeveloperDashboard = () => {
   const [userData, setUserData] = useState({});
@@ -63,16 +62,35 @@ console.log(userEmail);
   const handleLogout = () => {
     navigate('/login'); // Redirect to login page on logout
   };
+  const handlered1 = () => {
+    navigate('/games/add'); // Redirect to login page on logout
+  }
+  const handlered2 = () => {
+    navigate('/games/list'); // Redirect to login page on logout
+  }
   return (
     <div>
       <AppBar position="static">
-        <Toolbar style={{ justifyContent: 'space-between' }}>
-          <h2>Developer Dashboard</h2>
+      <Toolbar style={{ justifyContent: 'space-between' }}>
+        <h2>Developer Dashboard</h2>
+        <div>
+          {/* Link to View Games Page */}
+          <Link to="/games/list" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Button color="inherit" onClick = {handlered2}>View Games</Button>
+          </Link>
+          
+          {/* Link to Add Games Page */}
+          <Link to="/games/add" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Button color="inherit" onClick = {handlered1}>Add Games</Button>
+          </Link>
+
+          {/* Logout Button */}
           <Button color="inherit" onClick={handleLogout}>
             Logout
           </Button>
-        </Toolbar>
-      </AppBar>
+        </div>
+      </Toolbar>
+    </AppBar>
       <div style={{ padding: '16px' }}>
           <TextField
             label="Name"
