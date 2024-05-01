@@ -1,0 +1,72 @@
+/* form.css */
+
+.auth-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+  
+  .auth-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .auth-form label {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  .auth-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Ensure padding is included in width */
+  }
+  
+  .switch-btn {
+    padding: 12px 24px;
+    margin-right: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .switch-btn:last-child {
+    margin-right: 0;
+  }
+  
+  .switch-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .switch-page-text {
+    margin-top: 20px;
+    color: #333;
+  }
+  
+  .switch-page-link {
+    text-decoration: none;
+    color: #007bff;
+  }
+  
+  .switch-page-link:hover {
+    text-decoration: underline;
+  }
+  

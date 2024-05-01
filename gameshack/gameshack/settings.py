@@ -26,7 +26,33 @@ SECRET_KEY = 'django-insecure-1hkz(ne-6c%re+45l%+j6)tpy5dl5f)l=*zl*k4^phwcs=uc!3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*','localhost']
+# settings.py
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',  # Add your frontend URL here
+    # Add other allowed origins as needed
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',  # Allow DELETE requests
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'Accept',
+    'Accept-Encoding',
+    'Authorization',
+    'Content-Type',
+    'Origin',
+    'X-CSRF-Token',
+    'X-Requested-With',
+]
+
 
 
 # Application definition
@@ -60,6 +86,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'gameshack.urls'

@@ -3,7 +3,8 @@ from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import NormalUser, GameDeveloper
 from .serializers import NormalUserSerializer, GameDeveloperSerializer
-
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 class NormalUserListView(generics.ListAPIView):
     queryset = NormalUser.objects.all()
     serializer_class = NormalUserSerializer
@@ -90,3 +91,4 @@ class GameDeveloperCreateView(generics.CreateAPIView):
 class GameDeveloperDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = GameDeveloper.objects.all()
     serializer_class = GameDeveloperSerializer
+
