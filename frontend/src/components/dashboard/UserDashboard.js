@@ -3,7 +3,7 @@ import axios from 'axios';
 import { TextField,AppBar,Toolbar,Container, Typography, Button, Grid, Card, CardContent, CardActions  } from '@mui/material';
 import { useParams,useNavigate } from 'react-router-dom';
 
-const UserDashboard = () => {
+const UserDashboard = ({addToCart,addToWishlist}) => {
   const [userData, setUserData] = useState({});
   const [games, setGames] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -76,21 +76,66 @@ const UserDashboard = () => {
   const handleLogout = () => {
     navigate('/login'); // Redirect to login page on logout
   };
-  const addToCart = (gameId) => {
-    // Implement addToCart functionality here
-    console.log('Added to cart:', gameId);
+  const handleGoToCart = () => {
+    navigate('/cart'); // Redirect to the cart page
+  };
+  const handleGoToFavorites = () => {
+    navigate('/favorites');
   };
 
-  const addToWishlist = (gameId) => {
-    // Implement addToWishlist functionality here
-    console.log('Added to wishlist:', gameId);
+
+  const handleAddToCart = async (gameId) => {
+    try {
+      if (!userData || !userData.email) {
+        throw new Error('User data is missing or invalid.');
+      }
+
+      await axios.post(`http://127.0.0.1:8000/api/store/cart/create/`, {
+        user: userData.email,
+        user_email: userData.email,
+        game: gameId,
+      });
+
+      alert('Game added to cart!');
+      navigate('/cart');
+    } catch (error) {
+      console.error('Error adding game to cart:', error);
+      alert('An error occurred while adding game to cart.');
+    }
   };
+
+  const handleAddToWishlist = async (gameId) => {
+    try {
+      if (!userData || !userData.email) {
+        throw new Error('User data is missing or invalid.');
+      }
+
+      await axios.post(`http://127.0.0.1:8000/api/store/favorite/create/`, {
+        user: userData.email,
+        user_email: userData.email,
+        game: gameId,
+      });
+
+      alert('Game added to favorites!');
+      navigate('/favorites');
+    } catch (error) {
+      console.error('Error adding game to favorites:', error);
+      alert('An error occurred while adding game to favorites.');
+    }
+  };
+  
 
   return (
     <div>
       <AppBar position="static">
         <Toolbar style={{ justifyContent: 'space-between' }}>
           <h2>User Dashboard</h2>
+          <Button color="inherit" onClick={handleGoToCart}>
+            Cart
+          </Button>
+          <Button color="inherit" onClick={handleGoToFavorites}>
+            Favorites
+          </Button>
           <Button color="inherit" onClick={handleLogout}>
             Logout
           </Button>
@@ -175,22 +220,26 @@ const UserDashboard = () => {
           </Button>
         </div>
         {/* Game List Section */}
-        <AppBar></AppBar>
+
         <Typography variant="h4" style={{ marginBottom: 20 }}>Browse Games</Typography>
-        <Grid container spacing={3}>
-          {games.map((game) => (
-            <Grid item key={game.id} xs={12} sm={6} md={4}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h5" component="div">{game.title}</Typography>
-                  <Typography variant="body2" color="textSecondary">{game.description}</Typography>
-                </CardContent>
-                <CardActions>
-                  <Button onClick={() => addToCart(game.id)} variant="outlined" color="primary">Add to Cart</Button>
-                  <Button onClick={() => addToWishlist(game.id)} variant="outlined" color="secondary">Add to Wishlist</Button>
-                </CardActions>
-              </Card>
-            </Grid>
+      <Grid container spacing={3}>
+        {games.map((game) => (
+          <Grid item key={game.id} xs={12} sm={6} md={4}>
+            <Card>
+              <CardContent>
+                <Typography variant="h5" component="div">{game.title}</Typography>
+                <Typography variant="body2" color="textSecondary">{game.description}</Typography>
+              </CardContent>
+              <CardActions>
+                <Button onClick={() => handleAddToCart(game.id)} variant="outlined" color="primary">
+                  Add to Cart
+                </Button>
+                <Button onClick={() => handleAddToWishlist(game.id)} variant="outlined" color="secondary">
+                  Add to Wishlist
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
           ))}
         </Grid>
     </div>

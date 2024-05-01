@@ -7,6 +7,8 @@ import DeveloperDashboard from './components/dashboard/DeveloperDashboard';
 import AddGamePage from './pages/Games/AddGamePage';
 import GamesListPage from './pages/Games/GamesListPage';
 import EditGamePage from './pages/Games/EditGamePage';
+import CartPage from './pages/CartPage';
+import FavoritesPage from './pages/FavoritesPage';
 
 const App = () => {
   return (
@@ -21,6 +23,8 @@ const App = () => {
         <Route path="/games/add/:userEmail" element={<AddGamePage />} />
         <Route path="/games/list" element={<GamesListPage />} />
         <Route path="/games/edit/:gameId" element={<EditGamePage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
       </Routes>
     </Router>
   );

@@ -77,7 +77,7 @@ const styles = {
   gameListContainer: {
     marginTop: '20px',
     padding: '20px',
-    maxHeight: '400px',
+    maxHeight: '1000px',
     overflowY: 'auto',
   },
   imageContainer: {
