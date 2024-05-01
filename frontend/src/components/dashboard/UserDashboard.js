@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { TextField, Button,AppBar,Toolbar } from '@mui/material';
+import { TextField,AppBar,Toolbar,Container, Typography, Button, Grid, Card, CardContent, CardActions  } from '@mui/material';
 import { useParams,useNavigate } from 'react-router-dom';
 
 const UserDashboard = () => {
   const [userData, setUserData] = useState({});
+  const [games, setGames] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const { userEmail } = useParams(); // Extracting userEmail from URL parameter
   const navigate = useNavigate();
@@ -25,6 +26,21 @@ const UserDashboard = () => {
       fetchUserData();
     }
   }, [userEmail]);
+
+  const fetchGames = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/games/games/');
+      if (response.data) {
+        setGames(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching games:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchGames();
+  }, []);
 
   const handleFieldChange = (fieldName, value) => {
     setUserData(prevData => ({
@@ -60,11 +76,21 @@ const UserDashboard = () => {
   const handleLogout = () => {
     navigate('/login'); // Redirect to login page on logout
   };
+  const addToCart = (gameId) => {
+    // Implement addToCart functionality here
+    console.log('Added to cart:', gameId);
+  };
+
+  const addToWishlist = (gameId) => {
+    // Implement addToWishlist functionality here
+    console.log('Added to wishlist:', gameId);
+  };
+
   return (
     <div>
       <AppBar position="static">
         <Toolbar style={{ justifyContent: 'space-between' }}>
-          <h2>Developer Dashboard</h2>
+          <h2>User Dashboard</h2>
           <Button color="inherit" onClick={handleLogout}>
             Logout
           </Button>
@@ -129,6 +155,7 @@ const UserDashboard = () => {
             margin="normal"
             disabled={!isEditing}
           />
+          
           {isEditing ? (
             <>
               <Button onClick={handleUpdateUser} variant="contained" color="primary" style={{ marginTop: 16 }}>
@@ -147,6 +174,24 @@ const UserDashboard = () => {
             Delete Account
           </Button>
         </div>
+        {/* Game List Section */}
+        <Typography variant="h4" style={{ marginBottom: 20 }}>Browse Games</Typography>
+        <Grid container spacing={3}>
+          {games.map((game) => (
+            <Grid item key={game.id} xs={12} sm={6} md={4}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h5" component="div">{game.title}</Typography>
+                  <Typography variant="body2" color="textSecondary">{game.description}</Typography>
+                </CardContent>
+                <CardActions>
+                  <Button onClick={() => addToCart(game.id)} variant="outlined" color="primary">Add to Cart</Button>
+                  <Button onClick={() => addToWishlist(game.id)} variant="outlined" color="secondary">Add to Wishlist</Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
     </div>
   );
 };

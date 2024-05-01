@@ -63,8 +63,9 @@ console.log(userEmail);
     navigate('/login'); // Redirect to login page on logout
   };
   const handlered1 = () => {
-    navigate('/games/add'); // Redirect to login page on logout
+    navigate(`/games/add/${userEmail}`); // Redirect to add game page with userEmail parameter
   }
+  
   const handlered2 = () => {
     navigate('/games/list'); // Redirect to login page on logout
   }

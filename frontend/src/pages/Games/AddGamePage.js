@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Button, TextField, Typography, Container, Grid } from '@mui/material';
+import { useParams } from 'react-router-dom';
 
 const AddGamePage = () => {
+  const { userEmail } = useParams();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     release_date: '',
     price: '',
-    cover_image: null
+    cover_image: null,
+    developer_email: userEmail
   });
-
+console.log(userEmail);
   const handleFieldChange = (fieldName, value) => {
     setFormData({ ...formData, [fieldName]: value });
   };
@@ -29,7 +32,7 @@ const AddGamePage = () => {
       formDataWithFile.append('release_date', formData.release_date);
       formDataWithFile.append('price', formData.price);
       formDataWithFile.append('cover_image', formData.cover_image);
-
+      formDataWithFile.append('developer_email', formData.developer_email); 
       await axios.post('http://127.0.0.1:8000/api/games/games/create/', formDataWithFile, {
         headers: {
           'Content-Type': 'multipart/form-data'

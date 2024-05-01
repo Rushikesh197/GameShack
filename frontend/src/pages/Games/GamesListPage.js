@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Typography, List, ListItem, ListItemText, Paper, Grid, Box } from '@mui/material';
+import { Typography, List, ListItem, ListItemText, Paper, Grid, Box, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const GamesListPage = () => {
   const [games, setGames] = useState([]);
+  const navigate = useNavigate(); // Initialize navigate outside of any specific function
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -18,6 +20,13 @@ const GamesListPage = () => {
     fetchGames();
   }, []);
 
+  const handleEditGame = (gameId) => {
+    // Log the gameId before navigating
+    console.log('Editing game with ID:', gameId);
+    // Navigate to the EditGamePage with gameId as a URL parameter
+    navigate(`/games/edit/${gameId}/`);
+  };
+
   return (
     <div style={styles.container}>
       <Typography variant="h4" gutterBottom>
@@ -29,9 +38,9 @@ const GamesListPage = () => {
             <ListItem key={game.id}>
               <Grid container spacing={2}>
                 <Grid item xs={4}>
-                  <Box width={100}>
+                  <Box width={100} height={100} style={styles.imageContainer}>
                     <img
-                      src={`http://127.0.0.1:8000/gameshack/media/game_covers/${game.cover_image}`}
+                      src={`https://raw.githubusercontent.com/Rushikesh197/GameShack/gameshack/main/media/game_covers/apple_store_logo.png`}
                       alt={game.title}
                       style={styles.coverImage}
                     />
@@ -50,6 +59,7 @@ const GamesListPage = () => {
                       </React.Fragment>
                     }
                   />
+                  <Button variant="outlined" onClick={() => handleEditGame(game.id)}>Edit</Button>
                 </Grid>
               </Grid>
             </ListItem>
@@ -70,11 +80,19 @@ const styles = {
     maxHeight: '400px',
     overflowY: 'auto',
   },
-  coverImage: {
+  imageContainer: {
     width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  coverImage: {
+    width: 'auto',
     height: 'auto',
-    objectFit: 'cover',
-    borderRadius: '8px',
+    maxWidth: '100%',
+    maxHeight: '100%',
+    objectFit: 'contain', // or 'cover' depending on your preference
   },
 };
 
